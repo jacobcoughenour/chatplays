@@ -6,6 +6,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import clsx from "clsx";
 	import BreadcrumbLogo from "$lib/components/BreadcrumbLogo.svelte";
+	import { loadGameSettings, saveGameSettings } from "$lib/settings";
 
 	// game state
 
@@ -14,21 +15,22 @@
 
 	// game settings
 	let questionCommand = "";
-	let newQuestionCommand = "!q";
-	let category = "Obscure Video Game Character";
-	let newCategory = "Obscure Video Game Character";
+	let newQuestionCommand = "";
+	let category = "";
+	let newCategory = "";
 	let rules = "";
 	let newRules = "";
-	let streamerUsername = dev ? "thegreatj" : "";
+	let streamerUsername = "";
 	let numOfQuestions = 10;
-	let remainingTries = 0;
 
+	let remainingTries = 0;
 	let showSettings = false;
 	let isStarted = false;
 	let isTryingToStart = false;
 	let startError = "";
 
 	let canStartGame = false;
+	let settingsChanged = false;
 	let categoryMessage = "";
 	let newCategoryMessage = "";
 
@@ -43,7 +45,14 @@
 			!!streamerUsername &&
 			streamerUsername.length > 0 &&
 			!!newQuestionCommand &&
-			newQuestionCommand.length > 0;
+			newQuestionCommand.length > 0 &&
+			!!newCategoryMessage &&
+			newCategoryMessage.length > 0 &&
+			numOfQuestions > 0;
+
+		settingsChanged =
+			canStartGame &&
+			(newQuestionCommand !== questionCommand || newCategory !== category || newRules !== rules);
 
 		categoryMessage = `Guess the ${category} ${streamerUsername} is thinking of.`;
 		newCategoryMessage = `Guess the ${newCategory} ${streamerUsername} is thinking of.`;
@@ -244,6 +253,15 @@
 		category = newCategory;
 		rules = newRules;
 		showSettings = false;
+
+		// save settings
+		saveGameSettings("guessit", {
+			questionCommand,
+			category,
+			rules,
+			streamerUsername,
+			numOfQuestions
+		});
 	}
 
 	/**
@@ -286,6 +304,14 @@
 
 	onMount(() => {
 		if (!browser) return;
+
+		// load game settings
+		const settings = loadGameSettings("guessit");
+		newQuestionCommand = questionCommand = settings?.questionCommand ?? "!q";
+		newCategory = category = settings?.category ?? "Obscure Video Game Character";
+		newRules = rules = settings?.rules ?? "";
+		streamerUsername = settings?.streamerUsername ?? (dev ? "thegreatj" : "");
+		numOfQuestions = settings?.numOfQuestions ?? 10;
 
 		// newQuestionCommand = "!q";
 		// newRules = "test rules";
@@ -434,7 +460,7 @@
 						type="submit"
 						variant="filled"
 						on:click={applySettings}
-						disabled={newQuestionCommand === questionCommand}>Apply</Button
+						disabled={!settingsChanged}>Apply</Button
 					>
 					<Button variant="outlined" on:click={() => (showSettings = false)}>Cancel</Button>
 				</div>
