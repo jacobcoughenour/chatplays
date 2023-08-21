@@ -7,6 +7,8 @@
 	import clsx from "clsx";
 	import BreadcrumbLogo from "$lib/components/BreadcrumbLogo.svelte";
 	import { loadGameSettings, saveGameSettings } from "$lib/settings";
+	import SpotifySvg from "$lib/assets/spotify.svelte";
+	import YoutubeSvg from "$lib/assets/youtube.svelte";
 
 	// game state
 
@@ -127,7 +129,6 @@
 	}
 
 	function submitAnswer() {
-		console.log("submitAnswer", canSubmitAnswer);
 		if (state !== "answering" || !canSubmitAnswer) return;
 
 		guessMessages = [];
@@ -313,40 +314,42 @@
 		streamerUsername = settings?.streamerUsername ?? (dev ? "thegreatj" : "");
 		numOfQuestions = settings?.numOfQuestions ?? 10;
 
-		// newQuestionCommand = "!q";
-		// newRules = "test rules";
-		// startGame();
+		setTimeout(() => {
+			newQuestionCommand = "!q";
+			newRules = "test rules";
+			startGame();
 
-		// setTimeout(() => {
-		// 	questionsAndAnswers = new Array(9).fill(1).map(() => ({
-		// 		chatter: "test chatter",
-		// 		chatterDisplayName: "test chatter",
-		// 		question: "test question",
-		// 		answer: "test answer",
-		// 		guess: "test guess",
-		// 		isCorrect: false
-		// 	}));
+			setTimeout(() => {
+				questionsAndAnswers = new Array(9).fill(1).map(() => ({
+					chatter: "test chatter",
+					chatterDisplayName: "test chatter",
+					question: "test question",
+					answer: "test answer",
+					guess: "test guess",
+					isCorrect: false
+				}));
 
-		// 	submittedQuestions = submittedQuestions.concat([
-		// 		{
-		// 			displayName: "TheGreatJ",
-		// 			username: "thegreatj",
-		// 			color: "#008FCC",
-		// 			question:
-		// 				"jslkdjf ksldj flsdk jfsldj flskdjf lskjdf lksdfsldfjlsdkfjslkdfjlskfj sdlkfj sdlkfj sdlfkjs dfkljsdldkfj slkdfj sd fls djkflsjdflskdfjlsdjflskdjfslfkjsldfkjsdlkfjsdlfkjsdflskdfjl"
-		// 		}
-		// 	]);
+				submittedQuestions = submittedQuestions.concat([
+					{
+						displayName: "TheGreatJ",
+						username: "thegreatj",
+						color: "#008FCC",
+						question:
+							"jslkdjf ksldj flsdk jfsldj flskdjf lskjdf lksdfsldfjlsdkfjslkdfjlskfj sdlkfj sdlkfj sdlfkjs dfkljsdldkfj slkdfj sd fls djkflsjdflskdfjlsdjflskdjfslfkjsldfkjsdlkfjsdlfkjsdflskdfjl"
+					}
+				]);
 
-		// 	pickQuestion();
+				pickQuestion();
 
-		// 	setTimeout(() => {
-		// 		pendingAnswer = "test answer";
+				setTimeout(() => {
+					pendingAnswer = "test answer";
 
-		// 		setTimeout(() => {
-		// 			submitAnswer();
-		// 		}, 500);
-		// 	}, 500);
-		// }, 500);
+					setTimeout(() => {
+						submitAnswer();
+					}, 500);
+				}, 500);
+			}, 500);
+		}, 500);
 	});
 
 	onDestroy(() => {
@@ -745,6 +748,15 @@
 							</p>
 
 							<Button variant="filled" on:click={reset}>Play Again</Button>
+
+							<p class="mt-10">Check out my music</p>
+							<a href="https://youtu.be/ugckoHrFUfE" class="inline-flex space-x-2 fill-current">
+								<YoutubeSvg />
+								<span>Jacob Coughenour</span>
+							</a>
+							<a href="https://open.spotify.com/track/0Tg560De1kmDx6z6FGA2Hk?si=c4842a147167428a"
+								><img src="/shill/spotifycode.png" alt="Spotify" width="200px" /></a
+							>
 						</div>
 					{/if}
 
@@ -757,7 +769,7 @@
 								{streamerUsername} will now reveal the answer...
 							</p>
 
-							<Button variant="filled" on:click={reset}>Play Again</Button>
+							<Button color="error" variant="filled" on:click={reset}>Play Again</Button>
 						</div>
 					{/if}
 				</div>
