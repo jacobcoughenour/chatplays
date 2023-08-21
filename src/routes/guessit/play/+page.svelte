@@ -5,6 +5,7 @@
 	import * as _ from "lodash";
 	import Button from "$lib/components/Button.svelte";
 	import clsx from "clsx";
+	import BreadcrumbLogo from "$lib/components/BreadcrumbLogo.svelte";
 
 	// game state
 
@@ -333,10 +334,7 @@
 
 <div class="flex flex-col flex-1 absolute w-full h-full left-0 top-0">
 	<div class="flex mx-1 items-center h-12">
-		<div class="flex-1 ml-4 flex items-center">
-			<span class="text-title-md opacity-50">chatplays.games/</span>
-			<span class="text-title-md">guessit</span>
-		</div>
+		<BreadcrumbLogo path="guessit" />
 		{#if isStarted && !showSettings}
 			<Button
 				symbol="settings"

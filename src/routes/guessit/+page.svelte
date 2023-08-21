@@ -1,12 +1,10 @@
 <script>
+	import BreadcrumbLogo from "$lib/components/BreadcrumbLogo.svelte";
 	import Button from "$lib/components/Button.svelte";
 </script>
 
-<div class="flex items-start">
-	<div class="flex-1 flex items-center">
-		<span class="text-title-md opacity-50">chatplays.games/</span>
-		<span class="text-title-md">guessit</span>
-	</div>
+<div class="flex mx-1 items-center h-12">
+	<BreadcrumbLogo path="guessit" />
 </div>
 
 <div class="max-w-md mx-auto flex flex-col mt-16 items-stretch">
