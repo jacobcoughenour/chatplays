@@ -314,42 +314,43 @@
 		streamerUsername = settings?.streamerUsername ?? (dev ? "thegreatj" : "");
 		numOfQuestions = settings?.numOfQuestions ?? 10;
 
-		setTimeout(() => {
-			newQuestionCommand = "!q";
-			newRules = "test rules";
-			startGame();
+		// test
+		// setTimeout(() => {
+		// 	newQuestionCommand = "!q";
+		// 	newRules = "test rules";
+		// 	startGame();
 
-			setTimeout(() => {
-				questionsAndAnswers = new Array(9).fill(1).map(() => ({
-					chatter: "test chatter",
-					chatterDisplayName: "test chatter",
-					question: "test question",
-					answer: "test answer",
-					guess: "test guess",
-					isCorrect: false
-				}));
+		// 	setTimeout(() => {
+		// 		questionsAndAnswers = new Array(9).fill(1).map(() => ({
+		// 			chatter: "test chatter",
+		// 			chatterDisplayName: "test chatter",
+		// 			question: "test question",
+		// 			answer: "test answer",
+		// 			guess: "test guess",
+		// 			isCorrect: false
+		// 		}));
 
-				submittedQuestions = submittedQuestions.concat([
-					{
-						displayName: "TheGreatJ",
-						username: "thegreatj",
-						color: "#008FCC",
-						question:
-							"jslkdjf ksldj flsdk jfsldj flskdjf lskjdf lksdfsldfjlsdkfjslkdfjlskfj sdlkfj sdlkfj sdlfkjs dfkljsdldkfj slkdfj sd fls djkflsjdflskdfjlsdjflskdjfslfkjsldfkjsdlkfjsdlfkjsdflskdfjl"
-					}
-				]);
+		// 		submittedQuestions = submittedQuestions.concat([
+		// 			{
+		// 				displayName: "TheGreatJ",
+		// 				username: "thegreatj",
+		// 				color: "#008FCC",
+		// 				question:
+		// 					"jslkdjf ksldj flsdk jfsldj flskdjf lskjdf lksdfsldfjlsdkfjslkdfjlskfj sdlkfj sdlkfj sdlfkjs dfkljsdldkfj slkdfj sd fls djkflsjdflskdfjlsdjflskdjfslfkjsldfkjsdlkfjsdlfkjsdflskdfjl"
+		// 			}
+		// 		]);
 
-				pickQuestion();
+		// 		pickQuestion();
 
-				setTimeout(() => {
-					pendingAnswer = "test answer";
+		// 		setTimeout(() => {
+		// 			pendingAnswer = "test answer";
 
-					setTimeout(() => {
-						submitAnswer();
-					}, 500);
-				}, 500);
-			}, 500);
-		}, 500);
+		// 			setTimeout(() => {
+		// 				submitAnswer();
+		// 			}, 500);
+		// 		}, 500);
+		// 	}, 500);
+		// }, 500);
 	});
 
 	onDestroy(() => {
