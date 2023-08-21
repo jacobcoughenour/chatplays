@@ -44,8 +44,6 @@
 		canStartGame =
 			!!streamerUsername &&
 			streamerUsername.length > 0 &&
-			!!newQuestionCommand &&
-			newQuestionCommand.length > 0 &&
 			!!newCategoryMessage &&
 			newCategoryMessage.length > 0 &&
 			numOfQuestions > 0;
@@ -208,10 +206,12 @@
 				if (
 					(state === "waiting_for_questions" || state === "answering") &&
 					tags.username &&
-					message.toLowerCase().startsWith(questionCommand.toLowerCase() + " ")
+					(questionCommand.length === 0 ||
+						message.toLowerCase().startsWith(questionCommand.toLowerCase() + " "))
 				) {
-					const question = message.substring(questionCommand.length + 1).trim();
-					console.log(tags);
+					const question = (
+						questionCommand.length === 0 ? message : message.substring(questionCommand.length + 1)
+					).trim();
 					if (question.length > 0)
 						submittedQuestions = submittedQuestions.concat([
 							{
@@ -394,24 +394,34 @@
 
 			<div class="flex items-center gap-1">
 				<label for="category">Category</label>
-				<input
-					type="text"
-					id="category"
-					class="flex-1"
-					bind:value={newCategory}
-					disabled={isTryingToStart}
-				/>
+				<div class="flex flex-col flex-1">
+					<input
+						type="text"
+						id="category"
+						class="flex-1"
+						bind:value={newCategory}
+						disabled={isTryingToStart}
+					/>
+					<p class="text-label-sm text-secondary-dark mx-4 mt-0.5">
+						example: Obscure Video Game Character
+					</p>
+				</div>
 			</div>
 
 			<div class="flex items-center gap-1">
-				<label for="rules">Additional Rules</label>
-				<input
-					type="text"
-					id="rules"
-					class="flex-1"
-					bind:value={newRules}
-					disabled={isTryingToStart}
-				/>
+				<label for="rules">Additional rules</label>
+				<div class="flex flex-col flex-1">
+					<input
+						type="text"
+						id="rules"
+						class="flex-1"
+						bind:value={newRules}
+						disabled={isTryingToStart}
+					/>
+					<p class="text-label-sm text-secondary-dark mx-4 mt-0.5">
+						example: {streamerUsername ?? "Streamer"} can lie for 1 answer.
+					</p>
+				</div>
 			</div>
 
 			<fieldset
@@ -441,13 +451,18 @@
 
 			<div class="flex items-center gap-1">
 				<label for="questionCommand">Question command</label>
-				<input
-					type="text"
-					id="questionCommand"
-					class="flex-1"
-					bind:value={newQuestionCommand}
-					disabled={isTryingToStart}
-				/>
+				<div class="flex flex-col flex-1">
+					<input
+						type="text"
+						id="questionCommand"
+						class="flex-1"
+						bind:value={newQuestionCommand}
+						disabled={isTryingToStart}
+					/>
+					<p class="text-label-sm text-secondary-dark mx-4 mt-0.5">
+						leave blank and all chat messages will be treated as questions
+					</p>
+				</div>
 			</div>
 
 			{#if startError}
@@ -555,9 +570,13 @@
 					{#if state === "waiting_for_questions"}
 						<div class="flex-1 flex flex-col items-center mx-4">
 							<p class="text-3xl mb-2 mt-2 text-primary-dark animate-pulse text-center">
-								Use the <code class="bg-surfaceVariant-dark px-1 rounded-md font-semibold"
-									>{questionCommand}</code
-								> command in chat to submit a question
+								{#if questionCommand.length === 0}
+									Type in chat to submit a question
+								{:else}
+									Use the <code class="bg-surfaceVariant-dark px-1 rounded-md font-semibold"
+										>{questionCommand}</code
+									> command in chat to submit a question
+								{/if}
 							</p>
 							<p class="text-secondary-dark text-body-lg text-center">
 								<span class="material-symbols-rounded text-body-lg mr-2 mt-2">info</span><span
